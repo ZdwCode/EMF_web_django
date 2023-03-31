@@ -1,0 +1,57 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+    <style>
+        .account {
+            width:400px;
+            border:1px solid #dddddd;
+            border-radius:5px;
+            box-shadow: 5px 5px 20px #aaa;
+
+            margin-left:auto;
+            margin-right:auto;
+            margin-top:100px;
+            padding:20px 40px;
+        }
+
+        .account h2{
+            margin-top:10px;
+            text-align:center;
+        }
+    </style>
+</head>
+<body background="../static/img/bg.jpg'">
+<nav class="navbar navbar-default">
+    <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"style="font-size: 24px">高炉主铁沟侵蚀检测系统</a>
+    </div>
+  </div><!-- /.container-fluid -->
+</nav>
+    <div class="account">
+        <h2> 用户登录 </h2>
+        <form method="post" class="form-group">
+            {% csrf_token %}
+            <label >用户名</label>
+            <input type="text" name="user" class="form-control"  placeholder="用户名">
+             <label>密码</label>
+            <input type="password" name="password" class="form-control" placeholder="密码">
+             <br>
+            <input type="submit" value="登 录" class = "btn btn-primary">
+            <span style="color: red">{{error_msg}}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#" >注册</a>
+        </form>
+    </div>
+</body>
+</html>

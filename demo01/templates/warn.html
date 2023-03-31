@@ -1,0 +1,47 @@
+{% extends 'layout_default.html' %}
+
+{% block content %}
+   <div style="width:15%;height:90vh;background-color:#032653;float:left">
+        <ul class="nav nav-pills nav-stacked" style="padding: 1px">
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" nmouseenter="ditch_one()" ><a href="#">1号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_two()" ><a href="#">2号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_three()" ><a href="#">3号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_four()" ><a href="#">4号铁钩</a></li>
+        </ul>
+    </div>
+    <div style="width:80%;height:90vh;float:right">
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel panel-default">
+                  <!-- Default panel contents -->
+                  <div class="panel-heading">
+                      <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                      预警设置</div>
+
+                  <!-- Table -->
+                  <table class="table">
+                    <thead>
+                      <tr>
+                            <th>id</th>
+                            <th>厚度预警</th>
+                            <th>深度预警</th>
+                            <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">{{data.id}}</th>
+                            <td>{{data.thickness_warm}}</td>
+                            <td>{{data.height_warm}}</td>
+                            <td>
+                                <a class="btn btn-primary" href="/warmEdit/?nid={{data.id}}">编辑</a>
+                            </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+    </div>
+</div>
+{% endblock %}

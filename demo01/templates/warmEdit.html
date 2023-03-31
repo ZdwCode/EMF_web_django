@@ -1,0 +1,44 @@
+{% extends 'layout_default.html' %}
+
+{% block content %}
+<!-- 铁沟信息 -->
+    <div style="width:15%;height:90vh;background-color:#032653;float:left">
+        <ul class="nav nav-pills nav-stacked" style="padding: 1px">
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" nmouseenter="ditch_one()" ><a href="#">1号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_two()" ><a href="#">2号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_three()" ><a href="#">3号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_four()" ><a href="#">4号铁钩</a></li>
+        </ul>
+    </div>
+    <div style="width:80%;height:90vh;float:right">
+         <div class="container">
+             <div class="panel panel-default">
+                <div class="panel-heading">
+                 <h3 class="panel-title">编辑预警参数</h3>
+                </div>
+                <div class="panel-body">
+                <form class="form-horizontal" method="POST">
+                    {% csrf_token %}
+                  <div class="form-group">
+                    <label for="thickness" class="col-sm-2 control-label">厚度预警参数设置</label>
+                    <div class="col-sm-10">
+                      <input name="thickness" type="text" class="form-control" id="thickness" value="{{data.thickness_warm}}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="height" class="col-sm-2 control-label">液面高度预警设置</label>
+                    <div class="col-sm-10">
+                      <input name="height" type="text" class="form-control" id="height" value="{{data.height_warm}}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-default">确认修改</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+        </div>
+         </div>
+     </div>
+{% endblock %}

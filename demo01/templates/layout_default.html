@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+       video{
+           width: 50%;
+           height: 50%;
+           margin: 50px auto;
+           background-color: aquamarine;
+           display: block;
+           }
+       .footer {
+           background-color: #868a87;
+           color: white;
+           /*padding: 25px;*/
+           width:100%;
+           position:fixed;
+           bottom:0;
+           }
+
+    </style>
+<!--    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>-->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'js/echarts.all.js' %}"></script>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+  <div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav navbar navbar-left">
+        <li><img style="width: 257px;height: 53px; margin:0px" src="{% static 'img/123.png' %}"/> </li>
+        <li  style="font-size: 24px;margin-left: 23px"><a href="/info/ditch/">主铁沟厚度变化 <span class="sr-only">(current)</span></a></li>
+              <li style="font-size: 24px"><a href="/info/liquid/">液面</a></li>
+<!--              <li style="font-size: 24px"><a href="/info/iron/">渣铁</a></li>-->
+              <li style="font-size: 24px"><a href="/info/warn/">预警</a></li>
+              <li style="font-size: 24px"><a href="/info/history/">历史</a></li>
+              <li style="font-size: 24px"><a href="/info/user/">用户</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="/login/">注销</a></li>
+          <li style="margin-right:30px "class="dropdown ">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> root <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">个人信息</a></li>
+            <li><a href="#">我的信息</a></li>
+            <li><a href="#" >注销</a></li>
+          </ul>
+        </li>
+    </ul>
+  </div>
+</nav>
+
+
+  </div><!-- /.container-fluid -->
+</nav>
+<!-- 底部开始 -->
+<div class="footer">
+    <div class="copyright">Copyright ©2022 莱芜钢铁</div>
+</div>
+
+{% block content %} {% endblock %}
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

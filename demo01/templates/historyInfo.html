@@ -1,0 +1,66 @@
+{% extends 'layout_default.html' %}
+
+{% block content %}
+<!-- 铁沟信息 -->
+    <div style="width:15%;height:90vh;background-color:#032653;float:left">
+        <ul class="nav nav-pills nav-stacked" style="padding: 1px">
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" nmouseenter="ditch_one()" ><a href="#">1号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_two()" ><a href="#">2号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_three()" ><a href="#">3号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_four()" ><a href="#">4号铁钩</a></li>
+        </ul>
+    </div>
+
+    <div class="panel panel-default" style="width:80%;height:5vh;float:right" >
+        <form class="navbar-form navbar-left" role="search" style="float:right" method="post">
+            {% csrf_token %}
+          <div class="form-group">
+              <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+            <input id="start_time" name="start" type="date" class="form-control" style="width:30vh;height:3vh" value ='2022-11-10'>
+          </div>
+          <button type="submit" class="btn btn-default" style="height:3vh;margin-left:5vh" onclick="update()">Submit</button>
+        </form>
+    </div>
+    <!-- 提示信息处理 -->
+    <div class="panel panel-default" style="width:80%;height:80vh;float:right" >
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size: 24px">铁沟厚度历史查询</h3>
+        </div>
+        <div id="echart_thick" style="width:100%;height:90%;margin-top:2">
+        </div>
+    </div>
+    <div style="display:none">
+        <h1 id="mydate" >{{data.dates}}</h1>
+    </div>
+<script>
+    //document.getElementById('start_time').value = datas.start_time;
+    // 基于准备好的dom，初始化echarts实例
+    var myChart_thick = echarts.init(document.getElementById('echart_thick'));
+    var dates = document.getElementById('mydate').innerHTML;
+    var date_res = dates.split('[')[1].split(']')[0].split(',');
+    // 指定图表的配置项和数据
+    var option = {
+        tooltip: {},
+        legend: {
+            data:['流量']
+        },
+        xAxis: {
+            type:'category',
+            data: date_res,
+            axisLabel:{
+    		        interval: 0,
+    		        rotate:45,
+    	         }
+        },
+        yAxis: {},
+        series: [{
+            name: '流量',
+            type: 'bar',
+            data: {{data.datas}}
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart_thick.setOption(option);
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'layout_default.html' %}
+
+{% block content %}
+   <div style="width:15%;height:90vh;background-color:#032653;float:left">
+        <ul class="nav nav-pills nav-stacked" style="padding: 1px">
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" nmouseenter="ditch_one()" ><a href="#">1号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_two()" ><a href="#">2号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_three()" ><a href="#">3号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_four()" ><a href="#">4号铁钩</a></li>
+        </ul>
+    </div>
+    <div style="width:80%;height:90vh;float:right">
+        <div class="container">
+            <div style="margin-bottom:10px">
+                <a class="btn btn-success" href="#">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                    新建用户</a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel panel-default">
+                  <!-- Default panel contents -->
+                  <div class="panel-heading">
+                      <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                      用户列表</div>
+
+                  <!-- Table -->
+                  <table class="table">
+                    <thead>
+                      <tr>
+                            <th>id</th>
+                            <th>姓名</th>
+                            <th>账号</th>
+                            <th>密码</th>
+                            <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in data %}
+                        <tr>
+                            <th scope="row">{{item.id}}</th>
+                            <td>{{item.name}}</td>
+                            <td>{{item.username}}</td>
+                            <td>{{item.password}}</td>
+                            <td>
+                                <a class="btn btn-primary" href="#">编辑</a>
+                                <a class="btn btn-danger" href="#">删除</a>
+                            </td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+    </div>
+    </div>
+{% endblock %}

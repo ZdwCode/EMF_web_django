@@ -1,0 +1,717 @@
+{% extends 'layout_default.html' %}
+{% load static %}
+{% block content %}
+    <!-- 铁沟信息 -->
+    <div style="width:15%;height:90vh;background-color:#032653;float:left">
+        <ul class="nav nav-pills nav-stacked" style="padding: 1px">
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" nmouseenter="ditch_one()" ><a href="#">1号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_two()" ><a href="#">2号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_three()" ><a href="#">3号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_four()" ><a href="#">4号铁钩</a></li>
+        </ul>
+    </div>
+    <!-- 实时影像展示 -->
+<!--    <div class="panel panel-default" style="width:40%;height:20%;float:right">-->
+<!--        <div class="panel-heading">-->
+<!--        <h3 class="panel-title" style="font-size:22px">实时影像展示</h3>-->
+<!--        </div>-->
+<!--&lt;!&ndash;        <video style="width: 15%;height: 5%;" controls autoplay>&ndash;&gt;-->
+<!--&lt;!&ndash;            <source src="{%static 'img/mov_min.mp4' %}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        </video>&ndash;&gt;-->
+
+<!--    </div>-->
+    <!-- 铁钩寿命信息展示 -->
+    <div class="panel panel-default" style="width:70%;height:25%;float:left;margin-left: 100px;">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟寿命信息</h3>
+        </div>
+        <div style="width:100%;height:80%;">
+        <div id="main_1" style="width:68%;height:150%;float:left;margin:0"></div>
+        <div id="main_2" style="width:32%;height:70%;float:right;margin:0">
+            <h1 style="color:#000000;font-size: 8px">系统状态</h1>
+            <div style="padding:2px">
+            <img id ="image_1" srcs="{% static 'img/green.jpg' %}" style="width:30px;height:30px">
+            <span style="padding: 20px;">系统状态</span>
+            </div>
+            <div style="padding:2px" >
+            <img id ="image_2" src="{% static 'img/green.jpg' %}" style="width:30px;height:30px">
+            <span style="padding: 20px;" >网络状态</span>
+            </div>
+            <div style="padding:2px" >
+            <img id ="image_3" src="{% static 'img/green.jpg' %}" style="width:30px;height:30px">
+            <span style="padding: 20px;" >运行状态</span>
+            </div>
+        </div>
+        <div style="padding:2px">
+            <img id ="image_10" srcs="{% static 'img/green.jpg' %}" style="width:30px;height:30px">
+            <span style="padding: 20px;">系统状态</span>
+        </div>
+        </div>
+    </div>
+    <!-- 铁沟厚度信息展示 -->
+    <div class="panel panel-default" style="width:42%;height:30vh;float:right;margin-top: 0px;">
+        <div class="panel-heading" >
+        <h3 class="panel-title" style="font-size:22px">铁沟工作层最小残余厚度1</h3>
+        </div>
+        <div style="float:left;margin-left:100px;"><p>
+            <img id ="image_4" src="{% static 'img/green.jpg' %}" style="width:30px;height:30px">
+            <span>报警</span>
+            </p>
+        </div>
+        <div style="float:right;margin-right:0px;" class="panel-body" style=" text-align:center;margin:0;padding:0;">
+            <div style="clear:both">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true">报警厚度(<{{data_warn.thickness_warm}}mm)</span>
+                &nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-alert" aria-hidden="true">预警厚度(<450mm)</span>
+            </div>
+        </div>
+        <div id="thickness1" style="width:100%;height:78%;margin: 0 auto"></div>
+
+    </div>
+    <!-- 铁沟厚度信息展示 -->
+    <div class="panel panel-default" style="width:42%;height:30vh;float:left;margin-top: 0px;">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟工作层最小残余厚度2</h3>
+        </div>
+        <div style="float:left;margin-left:100px;"><p>
+            <img id ="image_5" src="{% static 'img/green.jpg' %}" style="width:30px;height:30px;">
+            <span>报警</span>
+            </p>
+        </div>
+        <div style="float:right;margin-right:0px" class="panel-body" style=" text-align:center;margin:0;">
+            <div style="clear:both">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true">报警厚度(<{{data_warn.thickness_warm}}mm)</span>
+                &nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-alert" aria-hidden="true">预警厚度(<450mm)</span>
+            </div>
+        </div>
+        <div id="thickness2" style="width:100%;height:78%;margin: 0 auto"></div>
+    </div>
+     <!-- 铁沟厚度信息展示 -->
+    <div class="panel panel-default" style="width:42%;height:30vh;float:right;margin-top: 0px;">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟工作层最小残余厚度3</h3>
+        </div>
+        <div style="float:left;margin-left:100px"><p>
+            <img id ="image_6" src="{% static 'img/green.jpg' %}" style="width:30px;height:30px">
+            <span>报警</span>
+            </p>
+        </div>
+        <div style="float:right;margin-right:0px" class="panel-body" style=" text-align:center;margin:0;padding:0;">
+            <div style="clear:both">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true">报警厚度(<{{data_warn.thickness_warm}}mm)</span>
+                &nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-alert" aria-hidden="true">预警厚度(<450mm)</span>
+            </div>
+        </div>
+        <div id="thickness3" style="width:100%;height:75%;"></div>
+    </div>
+     <!-- 铁沟厚度信息展示 -->
+    <div class="panel panel-default" style="width:42%;height:30vh;float:left;margin-top: 0px;">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟工作层最小残余厚度4</h3>
+        </div>
+        <div style="float:left;margin-left:100px"><p>
+            <img id ="image_7" src="{% static 'img/green.jpg' %}" style="width:30px;height:30px">
+            <span>报警</span>
+            </p>
+        </div>
+        <div style="float:right;margin-right:0px" class="panel-body" style=" text-align:center;margin:0;padding:0;">
+            <div style="clear:both">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true">报警厚度(<{{data_warn.thickness_warm}}mm)</span>
+                &nbsp;&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-alert" aria-hidden="true">预警厚度(<450mm)</span>
+            </div>
+        </div>
+        <div id="thickness4" style="width:100%;height:78%;"></div>
+    </div>
+
+<script type="text/javascript">
+    var myChart_thick = echarts.init(document.getElementById('thickness1'));
+    //var base = new Date(2022,10,1);
+    //var oneDay = 24*3600*1000;
+    var date = [];
+    var data = [];
+    //var now = new Date(base);
+    var myimage_4 = document.getElementById('image_4')
+    function addData(shift){
+        //设置时间坐标
+        //now = [now.getFullYear(),now.getMonth()+1,now.getDate()].join('/');
+        //date.push(now);
+        //data.push((Math.random()-0.4)*10);
+        $.ajax({
+             url: "http://127.0.0.1:8000/getThick/",
+             type: "get",
+             success: function (res) {
+                data.push(res.thickness);
+                date.push(res.date);
+                //console.log(typeof res.date)
+                //console.log(res.thickness)
+                setOptions1();
+                if(res.state == 'red'){
+                    myimage_4.src = "{% static 'img/red.jpg' %}";
+                }else{
+                    myimage_4.src = "{% static 'img/green.jpg' %}";
+                }
+             }
+             })
+        if(shift){
+            data.shift();
+            date.shift();
+        }
+    }
+
+    //制造一百个数据先
+    for(var i=1;i<5;i++){
+        addData()
+    }
+    function setOptions1(){
+        option1 = {
+        xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+         },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data,
+            markLine:{
+                       data:[{
+                       yAxis: {{data_warn.thickness_warm}},//通过查数据库来改变预警值
+                       label: {
+                            formatter: "预警值"+"({{data_warn.thickness_warm}})",
+                            fontSize: "10",
+                       },
+                       lineStyle: {//标注线样式
+                            normal: {
+                            type: 'solid',
+                            color: '#0ff',//标注线颜色
+                            width:'5',
+                            },
+                       },
+                       }]
+                    }
+        }]
+    }
+        myChart_thick.setOption(option1);
+    }
+    setInterval(function(){
+        addData(true);
+        myChart_thick.setOption({
+            xAxis:{
+                data:date
+            },
+            grid: {
+            top: "5%"
+            },
+            series:[
+                {
+                    name:'成交',
+                    data:data,
+                    markLine:{
+                       data:[{
+                       yAxis: {{data_warn.thickness_warm}},//通过查数据库来改变预警值
+                       label: {
+                            formatter: "预警值({{data_warn.thickness_warm}})",
+                            fontSize: "10",
+                       },
+                       lineStyle: {//标注线样式
+                            normal: {
+                            type: 'solid',
+                            color: '#0ff',//标注线颜色
+                            width:'5',
+                            },
+                       },
+                       }]
+                    }
+                }
+            ]
+        });
+    },1000*60*60);
+
+    var myChart_thick2 = echarts.init(document.getElementById('thickness2'));
+    //var base = new Date(2022,10,1);
+    //var oneDay = 24*3600*1000;
+    var date2 = [];
+    var data2 = [];
+    //console.log(data2)
+    //var now = new Date(base);
+    var myimage_5 = document.getElementById('image_5')
+    function addData2(shift){
+        //设置时间坐标
+        //now = [now.getFullYear(),now.getMonth()+1,now.getDate()].join('/');
+        //date2.push(now);
+        //data.push((Math.random()-0.4)*10);
+        $.ajax({
+             url: "http://127.0.0.1:8000/getThick2/",
+             type: "get",
+             success: function (res) {
+                data2.push(res.thickness);
+                date2.push(res.date);
+                setOption2();
+                if(res.state == 'red'){
+                    myimage_5.src = "{% static 'img/red.jpg' %}";
+                }else{
+                    myimage_5.src = "{% static 'img/green.jpg' %}";
+                }
+             }
+             })
+        if(shift){
+            data2.shift();
+            date2.shift();
+        }
+        //now = new Date(+new Date(now)+oneDay);
+    }
+
+    //制造一百个数据先
+    for(var i=1;i<5;i++){
+        addData2()
+    }
+    function setOption2(){
+        option2 = {
+        xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date2
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+            },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data2,
+            markLine:{
+                       data:[{
+                       yAxis: {{data_warn.thickness_warm}},//通过查数据库来改变预警值
+                       label: {
+                            formatter: "预警值"+"({{data_warn.thickness_warm}})",
+                            fontSize: "10",
+                       },
+                       lineStyle: {//标注线样式
+                            normal: {
+                            type: 'solid',
+                            color: '#0ff',//标注线颜色
+                            width:'5',
+                            },
+                       },
+                       }]
+                    }
+        }]
+    };
+        myChart_thick2.setOption(option2)
+    }
+
+    setInterval(function(){
+        addData2(true);
+        myChart_thick2.setOption({
+            xAxis:{
+                data:date2
+            },
+            grid: {
+            top: "5%"
+            },
+            series:[
+                {
+                    name:'成交',
+                    data:data2,
+                    markLine:{
+                       data:[{
+                       yAxis: {{data_warn.thickness_warm}},//通过查数据库来改变预警值
+                       label: {
+                            formatter: "预警值({{data_warn.thickness_warm}})",
+                            fontSize: "10",
+                       },
+                       lineStyle: {//标注线样式
+                            normal: {
+                            type: 'solid',
+                            color: '#0ff',//标注线颜色
+                            width:'5',
+                            },
+                       },
+                       }]
+                    }
+                }
+            ]
+        });
+    },1000*60*60);
+
+
+
+    var myChart_thick3 = echarts.init(document.getElementById('thickness3'));
+    //var base = new Date(2022,10,1);
+    //var oneDay = 24*3600*1000;
+    var date3 = [];
+    var data3 = [];
+    //var now = new Date(base);
+    var myimage_6 = document.getElementById('image_6')
+    function addData3(shift){
+        //设置时间坐标
+        //now = [now.getFullYear(),now.getMonth()+1,now.getDate()].join('/');
+        //date3.push(now);
+        //data.push((Math.random()-0.4)*10);
+        $.ajax({
+             url: "http://127.0.0.1:8000/getThick3/",
+             type: "get",
+             success: function (res) {
+                data3.push(res.thickness);
+                date3.push(res.date);
+                setOption3();
+                //console.log(typeof res.date)
+                //console.log(res.thickness)
+                if(res.state == 'red'){
+                    myimage_6.src = "{% static 'img/red.jpg' %}";
+                }else{
+                    myimage_6.src = "{% static 'img/green.jpg' %}";
+                }
+             }
+             })
+        if(shift){
+            data3.shift();
+            date3.shift();
+        }
+        //now = new Date(+new Date(now)+oneDay);
+    }
+    //制造一百个数据先
+    for(var i=1;i<5;i++){
+        addData3()
+    }
+
+    function setOption3(){
+        option3 = {
+        xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date3
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+            },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data3,
+            markLine:{
+                       data:[{
+                       yAxis: {{data_warn.thickness_warm}},//通过查数据库来改变预警值
+                       label: {
+                            formatter: "预警值"+"({{data_warn.thickness_warm}})",
+                            fontSize: "10",
+                       },
+                       lineStyle: {//标注线样式
+                            normal: {
+                            type: 'solid',
+                            color: '#0ff',//标注线颜色
+                            width:'5',
+                            },
+                       },
+                       }]
+                    }
+        }]
+    };
+    myChart_thick3.setOption(option3)
+    }
+    setInterval(function(){
+        addData3(true);
+        myChart_thick3.setOption({
+            xAxis:{
+                data:date3
+            },
+            grid: {
+            top: "5%"
+            },
+            series:[
+                {
+                    name:'成交',
+                    data:data3,
+                    markLine:{
+                       data:[{
+                       yAxis: {{data_warn.thickness_warm}},//通过查数据库来改变预警值
+                       label: {
+                            formatter: "预警值({{data_warn.thickness_warm}})",
+                            fontSize: "10",
+                       },
+                       lineStyle: {//标注线样式
+                            normal: {
+                            type: 'solid',
+                            color: '#0ff',//标注线颜色
+                            width:'5',
+                            },
+                       },
+                       }]
+                    }
+                }
+            ]
+        });
+    },1000*60*60);
+
+    var myChart_thick4 = echarts.init(document.getElementById('thickness4'));
+    //var base = new Date(2022,10,1);
+    //var oneDay = 24*3600*1000;
+    var date4 = [];
+    var data4 = [];
+    //var now = new Date(base);
+    var myimage_7 = document.getElementById('image_7')
+    function addData4(shift){
+        //设置时间坐标
+        //now = [now.getFullYear(),now.getMonth()+1,now.getDate()].join('/');
+        //date4.push(now);
+        //data.push((Math.random()-0.4)*10);
+        $.ajax({
+             url: "http://127.0.0.1:8000/getThick4/",
+             type: "get",
+             success: function (res) {
+                data4.push(res.thickness);
+                date4.push(res.date);
+                setOption4();
+                //console.log(typeof res.date)
+                //console.log(res.thickness)
+                if(res.state == 'red'){
+                    myimage_7.src = "{% static 'img/red.jpg' %}";
+                }else{
+                    myimage_7.src = "{% static 'img/green.jpg' %}";
+                }
+             }
+             })
+
+        if(shift){
+            data4.shift();
+            date4.shift();
+        }
+        //now = new Date(+new Date(now)+oneDay);
+    }
+    //制造一百个数据先
+    for(var i=1;i<5;i++){
+        addData4()
+    }
+
+    function setOption4(){
+    option4 = {
+        xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date4,
+                axisLabel:{
+     	            interval:3, //加入axisLabel字段,interval后面加你想要间隔的个数
+                }
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+            },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data4,
+            markLine:{
+                       data:[{
+                       yAxis: {{data_warn.thickness_warm}},//通过查数据库来改变预警值
+                       label: {
+                            formatter: "预警值"+"({{data_warn.thickness_warm}})",
+                            fontSize: "10",
+                       },
+                       lineStyle: {//标注线样式
+                            normal: {
+                            type: 'solid',
+                            color: '#0ff',//标注线颜色
+                            width:'5',
+                            },
+                       },
+                       }]
+                    }
+        }]
+    };
+    myChart_thick4.setOption(option4)
+    }
+
+    setInterval(function(){
+        addData4();
+    },1000*60*60);
+</script>
+<script type="text/javascript">
+    var main_1 = echarts.init(document.getElementById("main_1"));
+    var image_1 = document.getElementById("image_1");
+    var image_2 = document.getElementById("image_2");
+    var image_3 = document.getElementById("image_3");
+    var image_10 = document.getElementById("image_10");
+    // 设置寿命数据
+    $.ajax({
+                 url: "http://127.0.0.1:8000/getLife/",
+                 type: "get",
+                 success: function (res) {
+                        data_life_used = res.data
+                        data_life_rest = 100 - data_life_used
+                        //console.log(data_life_used,data_life_rest);
+                        var option = {
+                            title: {
+                                top: 5,
+                                left: 'left',
+                                text: '寿命信息',
+                                textStyle: {
+                                    color: '#000000',
+                                    fontSize: 22
+                                },
+                            },
+                          tooltip:  {
+                                 trigger:  'item'
+                          },
+                          legend:  { //图例
+                                 top:  '85%', //距离顶部的位置
+                                 left:  'center', //图例的位置
+                                 orient:'vertical'  //图例显示方式默认横向
+                          },
+                          series:  [{
+                                 name:'寿命信息',
+                                 type: 'pie',
+                                 radius:  ['40%','60%'],
+                                data:[
+                                {value:data_life_rest, name:'剩余寿命'},
+                                {value:data_life_used, name:'使用寿命'},
+                                ]
+                            }]
+
+                        }
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    main_1.setOption(option);
+                 }
+        })
+    setInterval(function(){
+        $.ajax({
+                 url: "http://127.0.0.1:8000/getLife/",
+                 type: "get",
+                 success: function (res) {
+                        data_life_used = res.data
+                        data_life_rest = 100 - data_life_used
+                        //console.log(data_life_used,data_life_rest);
+                        var option = {
+                            title: {
+                                top: 5,
+                                left: 'left',
+                                text: '寿命信息',
+                                textStyle: {
+                                    color: '#000000',
+                                    fontSize: 22
+                                },
+                            },
+                          tooltip:  {
+                                 trigger:  'item'
+                          },
+                          legend:  { //图例
+                                 top:  '85%', //距离顶部的位置
+                                 left:  'center', //图例的位置
+                                 orient:'vertical'  //图例显示方式默认横向
+                          },
+                          series:  [{
+                                 name:'寿命信息',
+                                 type: 'pie',
+                                 radius:  ['40%','60%'],
+                                data:[
+                                {value:data_life_rest, name:'剩余寿命'},
+                                {value:data_life_used, name:'使用寿命'},
+                                ]
+                            }]
+
+                        }
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    main_1.setOption(option);
+                 }
+        })
+        },1000*60*60);
+    setInterval(function(){
+        $.ajax({
+                 url: "http://127.0.0.1:8000/getState",
+                 type: "get",
+                 success: function (res) {
+
+                        if(res.systemType === 1){
+                            image_1.src = "{% static 'img/green.jpg' %}";
+                        }else{
+                            image_1.src = "{% static 'img/red.jpg' %}";
+                        }
+                        if(res.networkType === 1){
+
+                            image_2.src = "{% static 'img/green.jpg' %}";
+                        }else{
+
+                            image_2.src = "{% static 'img/red.jpg' %}";
+                        }
+                        if(res.runType === 1){
+
+                            image_3.src = "{% static 'img/green.jpg' %}";
+                        }else{
+
+                            image_3.src = "{% static 'img/red.jpg' %}";
+                        }
+
+                        if(image_10.src.match("red.jpg")){
+                            image_10.src = "{% static 'img/green.jpg' %}";
+                        }else{
+                            image_3.src = "{% static 'img/red.jpg' %}";
+                        }
+
+                 }//success
+        })},1000);
+   setInterval(function(){
+        $.ajax({
+                url: "http://127.0.0.1:8000/mytest",
+                type: "get",
+                success: function (res) {
+                console.log('请求发送玩了');
+                }
+        })},1000*60*60);
+</script>
+
+{% endblock %}

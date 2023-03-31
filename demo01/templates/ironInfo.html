@@ -1,0 +1,77 @@
+{% extends 'layout_default.html' %}
+
+{% block content %}
+<!-- 铁沟信息 -->
+    <div style="width:15%;height:90vh;background-color:#032653;float:left">
+        <ul class="nav nav-pills nav-stacked" style="padding: 1px">
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" nmouseenter="ditch_one()" ><a href="#">1号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_two()" ><a href="#">2号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_three()" ><a href="#">3号铁钩</a></li>
+            <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_four()" ><a href="#">4号铁钩</a></li>
+        </ul>
+    </div>
+<!-- 铁沟流量信息 -->
+    <div class="panel panel-default" style="width:43%;height:40vh;float:right">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟流量信息</h3>
+        </div>
+        <div class="panel-body" style="padding:0">
+            <div id="main" style="width: 590px;height:256px;"></div>
+        </div>
+    </div>
+<!-- 铁沟流量信息 -->
+    <div class="panel panel-default" style="width:40%;height:40vh;float:right">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟流量信息</h3>
+        </div>
+        <div class="panel-body">
+            <h1>这里插入表格，考虑使用echarts</h1>
+        </div>
+    </div>
+<!-- 铁沟流量信息 -->
+    <div class="panel panel-default" style="width:43%;height:40vh;float:right">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟流量信息</h3>
+        </div>
+        <div class="panel-body">
+            <h1>这里插入表格，考虑使用echarts</h1>
+        </div>
+    </div>
+<!-- 铁沟流量信息 -->
+    <div class="panel panel-default" style="width:40%;height:40vh;float:right">
+        <div class="panel-heading">
+        <h3 class="panel-title" style="font-size:22px">铁沟流量信息</h3>
+        </div>
+        <div class="panel-body">
+            <h1>这里插入表格，考虑使用echarts</h1>
+        </div>
+    </div>
+
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '第一个 ECharts 实例'
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+{% endblock %}
