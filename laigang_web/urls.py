@@ -27,20 +27,25 @@ urlpatterns = [
     path('info/liquid/', views.liquidInfo),
     path('info/iron/', views.ironInfo),
     path('info/warn/', views.warn),
-    path('info/history/', views.historyInfo),
+    path('info/history/', views.history),
+    path('info/historyInfo/', views.historyInfo),
+    path('info/historyInfoMain/', views.historyInfoMain),
     path('info/user/', views.userInfo),
-    path('datatest/', views.datatest),
     path('getLife/', views.getLifeDate),
     path('getState/', views.getStateData),
     path('getThick/', views.getThickData1),
+    path('getThickFirst/', views.getThickData1First),
     path('getThick2/', views.getThickData2),
+    path('getThick2First/', views.getThickData2First),
     path('getThick3/', views.getThickData3),
+    path('getThick3First/', views.getThickData3First),
     path('getThick4/', views.getThickData4),
+    path('getThick4First/', views.getThickData4First),
     path('getHeight/', views.getLiquidData),
     path('warmEdit/', views.warmEdit),
     path('mytest/', views.test),
-    path('changedate/', views.changedate)
-
+    #path('add/', views.add),
+    path('modify/', views.modify),
 ]
 
 # from django.conf.urls import static

@@ -147,7 +147,7 @@ def removeData(data):
     y3_simple = []
     result = []
     for i in range(len(y0)):
-        if i % 400 == 0:
+        if i % 1000 == 0:
             y0_simple.append(y0[i])
             y1_simple.append(y1[i])
             y2_simple.append(y2[i])
@@ -449,7 +449,7 @@ def savesignal(_result,_url):
     df = pd.DataFrame(_result)
     df.to_excel(_url, index=False, header=False)
 
-
+import matplotlib.pyplot as plt
 def load_data():
     """
     :param data: 处理完毕后的数据
@@ -459,11 +459,15 @@ def load_data():
     Y = []  #
     data = []
     # 服务器地址
-    data0, data1, data2, data3 = read_newtdmsfile('./demo01/static/datas/')
+    # data0, data1, data2, data3 = read_newtdmsfile('./demo01/static/datas/')
+    # 测试地址
+    data0, data1, data2, data3 = read_newtdmsfile('./datas/')
     # todo 姚灏的方法加载这 然后写进数据库
     caiji_houdu = 900
-    a=calculate1(data0, data1, data2, data3,caiji_houdu)
-    b=calculate2(data0, data1,caiji_houdu)
+    #a=calculate1(data0, data1, data2, data3,caiji_houdu)
+    #b=calculate2(data0, data1,caiji_houdu)
+    a = 0
+    b = 0
     # 本地测试地址
     # data0, data1, data2, data3 = read_newtdmsfile('../static/datas/')
     #data0, data1, data2, data3 = load_new_data()
@@ -471,18 +475,51 @@ def load_data():
     data.append(data1)
     data.append(data2)
     data.append(data3)
-    # 平滑
-    result1 = smooth(data)
+    # fig, axes = plt.subplots(4, 1)
+    # plt.subplots_adjust(hspace=0.2)
+    # x_label = range(len(data[0]))
+    # for i in range(4):
+    #     if i == 0:
+    #         axes[i].set_title('Emf data')
+    #     axes[i].plot(x_label, data[i])
+    # plt.show()
     # 去冗余
+    result1 = smooth(data)
+    # fig, axes = plt.subplots(4, 1)
+    # plt.subplots_adjust(hspace=0.2)
+    # x_label = range(len(result1[0]))
+    # for i in range(4):
+    #     if i == 0:
+    #         axes[i].set_title('Emf data')
+    #     axes[i].plot(x_label, result1[i])
+    # plt.show()
+    # 平滑
     result2 = removeData(result1)
+    # fig, axes = plt.subplots(4, 1)
+    # plt.subplots_adjust(hspace=0.2)
+    # x_label = range(len(result2[0]))
+    # for i in range(4):
+    #     if i == 0:
+    #         axes[i].set_title('Emf data')
+    #     axes[i].plot(x_label, result2[i])
+    # plt.show()
     # 归一化
     result3 = normalization(result2)
+    # fig, axes = plt.subplots(4, 1)
+    # plt.subplots_adjust(hspace=0.2)
+    # x_label = range(len(result3[0]))
+    # for i in range(4):
+    #     if i == 0:
+    #         axes[i].set_title('Emf data')
+    #     axes[i].plot(x_label, result3[i])
+    # plt.show()
     # result3 = result2
     u0 = result3[0]
     u1 = result3[1]
     u2 = result3[2]
     u3 = result3[3]
     start = 0.850
+    mystep = float(0.3/len(u3))
     for i in range(len(u0)):
         x = []
         y = []
@@ -493,7 +530,7 @@ def load_data():
         y.append(start)
         X.append(x)
         Y.append(y)
-        start -= 0.00000072
+        start -= mystep
     return X,Y, a, b
 
 
@@ -513,8 +550,9 @@ def read_newtdmsfile(_path):  # "/Users/yaoyaohao/Desktop/EMF数据/*.tdms"
     # #---------需要部分修改（开始采集时间和结束时间）
     # G:\poststudy\2023-03\dist\dist\manage\django\contrib\admin\static\datas
     # file_path = 'D:\测试数据\\2023年03月30日\数据_30日10时44分_8#.tdms'
-    file_path = 'E:\pythonProject\laigang_web 2\demo01\static\datas\\数据_13日10时43分_7#.tdms'
-    #file_path = '.\demo01\static\datas\\数据_13日10时43分_7#.tdms'
+    # file_path = 'E:\pythonProject\laigang_web 2\demo01\static\datas\\数据_13日10时43分_7#.tdms'
+    # file_path = '.\demo01\static\datas\\数据_13日10时43分_7#.tdms'
+    file_path = 'E:\pythonProject\laigang_web 2\demo01\static\datas\\22.1121日14时29分_7# .tdms'
     # read a tdms file
     filenameS = file_path
     tdms_file = TdmsFile(filenameS)
@@ -532,7 +570,7 @@ def read_newtdmsfile(_path):  # "/Users/yaoyaohao/Desktop/EMF数据/*.tdms"
     df.columns = index_i
     _signal = []
     j =  0
-    for i in (1, 15, 2, 16):
+    for i in (1, 15, 2, 16):#我是章乖狗
         y = df['CH ' + str(i)].tolist() # 11月数据_28日14时46分_12#.tdms 22.1121日14时29分_7# .tdms
         # y = df['3-' + str(i)].tolist()# 1_22年11月14日16时23分_0#.tdms
         _signal.append(y)
@@ -543,21 +581,22 @@ def read_newtdmsfile(_path):  # "/Users/yaoyaohao/Desktop/EMF数据/*.tdms"
 
 if __name__ == "__main__":
     # 14 21 23 28
+    print('start---')
     step = 500
     beta = 0.001
-    layer = [4, 5, 6, 5, 4, 1]
+    layer = [4, 32, 16, 8, 4, 2, 1]
     #layer = [4, 5, 3, 1]
-    x, y,a,b = load_data()
+    x, y, a, b = load_data()
     data = [(np.array([[x_value[0]], [x_value[1]], [x_value[2]], [x_value[3]]]), np.array([y_value])) for
             x_value, y_value in zip(x, y)]
     model = BP(layer, tanh, tanh_derivative, loss_derivative)
     x = np.array(x)
     y = np.array(y)
-    epochs, losses = model.fit(train_data=data, epochs=5, batch_size=64, learning_rate=beta, validation_data=(x, y))
+    epochs, losses = model.fit(train_data=data, epochs=50000, batch_size=256, learning_rate=beta, validation_data=(x, y))
     # model.load_weights()
     model.save_weights()
+    print('ok!')
     predict = model.predict(x)
-    print(predict)
     predict_ope = copy.deepcopy(predict)
     predict_ope[0] = 0.850
     for i in range(1, len(predict)):
@@ -567,39 +606,43 @@ if __name__ == "__main__":
             predict_ope[i] = predict_ope[i - 1] * 0.9998 + predict_ope[i] * 0.0002
     x1 = range(len(predict))
     # # print(predict)
-    plt.plot(x1, predict, "-r", linewidth=2, label='true')
     plt.plot(x1, predict_ope, "-b", linewidth=1, label='predict_1')
     plt.plot(x1, y, "-g", linewidth=1, label='predict_2')
-
-    results_1 = []
-    for i in predict_ope:
-        results_1.append(i[0]*1000)
     plt.legend()
     plt.show()
-    df = pandas.DataFrame({
-        'predict_data': results_1[:]
-    })
-    df.to_csv('predict_data.csv')
-
-    results_1 = []
-    for i in y:
-        results_1.append(i[0] * 1000)
+    plt.plot(range(len(losses)), losses, "-r", linewidth=2, label='loss')
     plt.legend()
     plt.show()
-    df = pandas.DataFrame({
-        'true_data': results_1[:]
-    })
-    df.to_csv('true_data.csv')
-
-    results_1 = []
-    for i in predict:
-        results_1.append(i[0] * 1000)
-    plt.legend()
-    plt.show()
-    df = pandas.DataFrame({
-        'predict_original_data': results_1[:]
-    })
-    df.to_csv('predict_original_data.csv')
-    #x2 = range(epochs)
-    #plt.plot(x2, losses, "-r", linewidth=2, label='origin')
-    #plt.show()
+    #
+    # results_1 = []
+    # for i in predict_ope:
+    #     results_1.append(i[0]*1000)
+    # plt.legend()
+    # plt.show()
+    # df = pandas.DataFrame({
+    #     'predict_data': results_1[:]
+    # })
+    # df.to_csv('predict_data.csv')
+    #
+    # results_1 = []
+    # for i in y:
+    #     results_1.append(i[0] * 1000)
+    # plt.legend()
+    # plt.show()
+    # df = pandas.DataFrame({
+    #     'true_data': results_1[:]
+    # })
+    # df.to_csv('true_data.csv')
+    #
+    # results_1 = []
+    # for i in predict:
+    #     results_1.append(i[0] * 1000)
+    # #plt.legend()
+    # #plt.show()
+    # df = pandas.DataFrame({
+    #     'predict_original_data': results_1[:]
+    # })
+    # df.to_csv('predict_original_data.csv')
+    # #x2 = range(epochs)
+    # #plt.plot(x2, losses, "-r", linewidth=2, label='origin')
+    # #plt.show()

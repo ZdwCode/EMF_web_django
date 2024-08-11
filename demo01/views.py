@@ -15,11 +15,6 @@ import datetime
 from stat import S_ISREG, ST_CTIME, ST_MODE
 from nptdms import TdmsFile
 
-# Create your views here.
-# def index(request):
-#     return render(request, 'index.html')
-
-
 def login(request):
     if request.method == "GET":
         return render(request, 'login.html')
@@ -35,11 +30,6 @@ def login(request):
         else:
             return render(request, 'login.html', {"error_msg": "用户名或密码错误"})
 
-
-# def default(request):
-#     return render(request, 'layout_default.html')
-
-
 def ditchInfo(request):
     """
     需要传的值：1.厚度预警值
@@ -54,16 +44,13 @@ def liquidInfo(request):
     data_warn = WarmInfo.objects.all().first()
     return render(request, 'liquidInfo.html', {"data_warn": data_warn})
 
-
 def ironInfo(request):
     return render(request, 'ironInfo.html')
-
 
 def warn(request):
     data = WarmInfo.objects.all().first()
     # print(data.thickness_warm, data.height_warm)
     return render(request, 'warn.html', {"data": data})
-
 
 def warmEdit(request):
     nid = request.GET.get('nid')
@@ -80,91 +67,76 @@ def warmEdit(request):
                                                height_warm=height)
         return redirect('/info/warn/')
 
+def history(request):
+    return render(request, 'historyInfo.html',)
 
 def historyInfo(request):
-    if request.method == "GET":
-        return render(request, 'historyInfo.html')
-    else:
-        start_time = request.POST.get("start")
-        end_time = request.POST.get("end")
-        if start_time == '':
-            return render(request, 'historyInfo.html')
-        # start_time = datetime.date(int(start_time.split('-')[0]),
-        #                            int(start_time.split('-')[1]),
-        #                            int(start_time.split('-')[2]))
+    dateset_thick = ThickInfo.objects.all()
+    dates1 = []
+    datas1 = []
+    for item in dateset_thick:
+        if item.date:
+            result = item.date
+            dates1.append(result)
+            datas1.append(item.thickness)
+    dateset_thick2 = ThickInfo2.objects.all()
+    dates2 = []
+    datas2 = []
+    for item in dateset_thick2:
+        if item.date:
+            result = item.date
+            dates2.append(result)
+            datas2.append(item.thickness)
+    dateset_thick3 = ThickInfo3.objects.all()
+    dates3 = []
+    datas3 = []
+    for item in dateset_thick3:
+        if item.date:
+            result = item.date
+            dates3.append(result)
+            datas3.append(item.thickness)
+    dateset_thick4 = ThickInfo4.objects.all()
+    dates4 = []
+    datas4 = []
+    for item in dateset_thick4:
+        if item.date:
+            result = item.date
+            dates4.append(result)
+            datas4.append(item.thickness)
+    data = {
+        "datas_1": datas1,
+        "dates_1": dates1,
+        "datas_2": datas2,
+        "dates_2": dates2,
+        "datas_3": datas3,
+        "dates_3": dates3,
+        "datas_4": datas4,
+        "dates_4": dates4,
 
-        # 判断日期的大小
-        # print(type(start_time - end_time))
-        # print(type((start_time - end_time).days))
-        dateset_thick = ThickInfo.objects.all()
-        dates = []
-        datas = []
-        for item in dateset_thick:
-            result = str(item.date)
-            if start_time in result:
-                result = str(result).replace('-', '/')
-                myresult = result.split(' ')[1].split('+')[0]
-                dates.append(myresult)
-                datas.append(item.thickness)
-        data = {
-            "datas": datas,
-            "dates": dates,
-        }
-        return render(request, 'historyInfo.html', {"data": data})
+    }
+    return JsonResponse(data)
 
+def historyInfoMain(request):
+    dateset_thick = ThickInfo2.objects.all()
+    dates1 = []
+    datas1 = []
+    for item in dateset_thick:
+        if item.date:
+            result = item.date
+            dates1.append(result)
+            datas1.append(item.thickness)
+    data = {
+        "datas_1": datas1[-700:-1],
+        "dates_1": dates1[-700:-1],
+    }
+    return JsonResponse(data)
 
 def userInfo(request):
     data = UserInfo.objects.all()
     print('user_data', data)
     return render(request, 'userInfo.html', {"data": data})
 
-
 ## open('./demo01/mymodel/parameters', "rb")
-def datatest(request):
-
-    # 添加液面高度数据 40-180 随机生成100组
-    # dates = np.random.randint(40, 180, 100)
-    # for data in dates:
-    #     LiquidInfo.objects.create(li_height=data)
-
-    # 添加系统状态数据 40-100 随机生成60组
-    # dates_sys = np.random.randint(0, 2, 50)
-    # dates_net = np.random.randint(0, 2, 50)
-    # dates_run = np.random.randint(0, 2, 50)
-    # for i in range(50):
-    #     StateInfo.objects.create(systemType=dates_sys[i],
-    #                              networkType=dates_net[i],
-    #                              runType=dates_run[i])
-
-    # 添加厚度数据
-
-    df = pd.read_csv('./demo01/mymodel/predict_data.csv')
-    datas_thick = df['predict_data']
-    for data in datas_thick:
-        ThickInfo.objects.create(thickness=data)
-        ThickInfo2.objects.create(thickness=data)
-        ThickInfo3.objects.create(thickness=data)
-        ThickInfo4.objects.create(thickness=data)
-
-    # 测试日期数据
-    # date = '2022-02-01'
-    # DateTest.objects.create(date=date)
-    # dataset_li = LiquidInfo.objects.all()
-    # oneDay = datetime.timedelta(days=1)
-    # for index in range(1,len(dataset_li)):
-    #     dataset_li[index].date = dataset_li[index-1].date + oneDay
-    #     LiquidInfo.objects.filter(id=index).update(date=dataset_li[index].date)
-    # # print(temp.replace('-', ','))
-
-    # 测试日期数据
-    # dataset_thick = ThickInfo.objects.all()
-    # oneDay = datetime.timedelta(days=1)
-    # for index in range(1,len(dataset_thick)):
-    #     dataset_thick[index].date = dataset_thick[index-1].date + oneDay
-    #     ThickInfo.objects.filter(id=index).update(date=dataset_thick[index].date)
-    #     # print(temp.replace('-', ','))
-    return HttpResponse("添加成功")
-
 
 def getLifeDate(request):
     dataset = LifeTimeInfo.objects.all()
@@ -177,7 +149,6 @@ def getLifeDate(request):
     # print("here",result)
     return JsonResponse(data_res)
 
-
 def getStateData(request):
     dataset = StateInfo.objects.all()
     index = random.randint(0, len(dataset) - 1)
@@ -189,14 +160,8 @@ def getStateData(request):
     }
     return JsonResponse(data_res)
 
-
 def getThickData1(request):
     index1 = LastId.objects.get(id=1).lastid_1  # 201
-    print('厚度1 取到的id:', index1)
-    index1_new = index1 + 1
-    print('厚度1 增加后的id:', index1_new)
-    LastId.objects.filter(id=1).update(lastid_1=index1_new)
-    # index = 5978
     dataset = ThickInfo.objects.get(id=index1)
     result = dataset.thickness
     date = dataset.date.strftime("%Y-%m-%d %H:%M:%S")
@@ -210,9 +175,40 @@ def getThickData1(request):
         "state": state,
         "date": date
     }
-    # setThickData1()
     return JsonResponse(data_res)
 
+def getThickData1First(request):
+    index1 = LastId.objects.get(id=1).lastid_1
+    result = []
+    date = []
+    state = ''
+    for i in range(1, 6):# 1 2 3 4 5
+        index1 = index1 - i
+        dataset = ThickInfo.objects.get(id=index1)
+        result.append(dataset.thickness)
+        date.append(dataset.date.strftime("%Y-%m-%d %H:%M:%S"))
+        if i == 0:
+            data = WarmInfo.objects.all().first()
+            warn_thickness = data.thickness_warm
+            state = 'green'
+            if result[0] < warn_thickness:
+                state = 'red'
+
+    data_res = {
+        "thickness_1": result[0],
+        "date_1": date[0],
+        "thickness_2": result[1],
+        "date_2": date[1],
+        "thickness_3": result[2],
+        "date_3": date[2],
+        "thickness_4": result[3],
+        "date_4": date[3],
+        "thickness_5": result[4],
+        "date_5": date[4],
+        "state": state,
+    }
+    # setThickData1()
+    return JsonResponse(data_res)
 
 def read_newtdmsfile(_path):#"/Users/yaoyaohao/Desktop/EMF数据/*.tdms"
 # 获取目录中的 tdms 文件列表
@@ -251,20 +247,17 @@ def read_newtdmsfile(_path):#"/Users/yaoyaohao/Desktop/EMF数据/*.tdms"
 
     return _signal[0],_signal[1],_signal[2],_signal[3]
 
-
 from demo01.mymodel import Bpnet
 def setThickData1():
     step = 500
     beta = 0.001
-    layer = [4, 5, 6, 5, 4, 1]
-    # 从na'li
+    layer = [4, 32, 16, 8, 4, 2, 1]
     path = DatePath.objects.all().first().path
     x,a,b = Bpnet.load_data(path)
     # # data = [(np.array([[x_value[0]],[x_value[1]],[x_value[2]],[x_value[3]]]), np.array([y_value])) for x_value, y_value in zip(x, y)]
     model = Bpnet.BP(layer, Bpnet.tanh, Bpnet.tanh_derivative, Bpnet.loss_derivative)
     x = np.array(x)
     model.load_weights()
-    print('参数加载完毕')
     # predict = model.predict(x)
 
     # todo 训练一个新模型 这里只预测一个数据 然后拿数据库的最后一个数据来做权重计算
@@ -276,25 +269,39 @@ def setThickData1():
     predict_finall = sum_finall/50
     last_id = LastId2.objects.get(id=1).lastid_1
     last_data = ThickInfo.objects.get(id=last_id).thickness
-    result = (last_data/1000)*0.98 + predict_finall*0.02
+    if predict_finall > (last_data/ 1000):
+        result = (last_data / 1000) * 0.9987
+    else:
+        result = (last_data / 1000)* 0.998 + predict_finall*0.002
     result = result*1000
     date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     ThickInfo.objects.create(thickness=result, date=date)
+    index1 = LastId.objects.get(id=1).lastid_1  # 201
+    index1_new = index1 + 1
+    LastId.objects.filter(id=1).update(lastid_1=index1_new)
+    a_rand = random.randint(-6,6)
+    b_rand = random.randint(-6,6)
+    a = result+a_rand
+    b = result+b_rand
     ThickInfo2.objects.create(thickness=a, date=date)
+    index2 = LastId.objects.get(id=1).lastid_2  # 201
+    index2_new = index2 + 1
+    LastId.objects.filter(id=1).update(lastid_2=index2_new)
     ThickInfo3.objects.create(thickness=b, date=date)
+    index3 = LastId.objects.get(id=1).lastid_3  # 201
+    index3_new = index3 + 1
+    LastId.objects.filter(id=1).update(lastid_3=index3_new)
     d = (result+a+b)/3
     ThickInfo4.objects.create(thickness=d, date=date)
+    index4 = LastId.objects.get(id=1).lastid_4  # 201
+    index4_new = index4 + 1
+    LastId.objects.filter(id=1).update(lastid_4=index4_new)
     LastId2.objects.filter(id=1).update(lastid_1=last_id + 1)
-    life_state = (result/950)*100
-    LifeTimeInfo.objects.create(lifetime=life_state)
-
+    life_state = ((result-550)/950)*100
+    LifeTimeInfo.objects.create(lifeTime=life_state)
 
 def getThickData2(request):
     index2 = LastId.objects.get(id=1).lastid_2  # 201
-    print('厚度2 取到的id:', index2)
-    index2_new = index2 + 1
-    print('厚度2 增加后的id:', index2_new)
-    LastId.objects.filter(id=1).update(lastid_2=index2_new)
     dataset = ThickInfo2.objects.get(id=index2)
     result = dataset.thickness
     date = dataset.date.strftime("%Y-%m-%d %H:%M:%S")
@@ -311,14 +318,42 @@ def getThickData2(request):
     }
     return JsonResponse(data_res)
 
+def getThickData2First(request):
+    index2 = LastId.objects.get(id=1).lastid_2  # 201
+    result = []
+    date = []
+    state = ''
+    for i in range(1,6): # 0 1 2 3 4
+        index2 = index2 - i
+        dataset = ThickInfo2.objects.get(id=index2)
+        result.append(dataset.thickness)
+        date.append(dataset.date.strftime("%Y-%m-%d %H:%M:%S"))
+        # 最后一个状态
+        if i == 0:
+            data = WarmInfo.objects.all().first()
+            warn_thickness = data.thickness_warm
+            state = 'green'
+            if result[0] < warn_thickness:
+                state = 'red'
+
+    data_res = {
+        "thickness_1": result[0],
+        "date_1": date[0],
+        "thickness_2": result[1],
+        "date_2": date[1],
+        "thickness_3": result[2],
+        "date_3": date[2],
+        "thickness_4": result[3],
+        "date_4": date[3],
+        "thickness_5": result[4],
+        "date_5": date[4],
+        "state": state,
+    }
+    # setThickData1()
+    return JsonResponse(data_res)
 
 def getThickData3(request):
     index3 = LastId.objects.get(id=1).lastid_3 # 201
-    print('厚度3 取到的id:', index3)
-    index3_new = index3 + 1
-    print('厚度3 增加后的id:', index3_new)
-    LastId.objects.filter(id=1).update(lastid_3=index3_new)
-
     dataset = ThickInfo3.objects.get(id=index3)
     result = dataset.thickness
     date = dataset.date.strftime("%Y-%m-%d %H:%M:%S")
@@ -334,13 +369,42 @@ def getThickData3(request):
     }
     return JsonResponse(data_res)
 
+def getThickData3First(request):
+    index3 = LastId.objects.get(id=1).lastid_3  # 201
+    result = []
+    date = []
+    state = ''
+    for i in range(1, 6): # 0 1 2 3 4
+        index3 = index3 - i
+        dataset = ThickInfo3.objects.get(id=index3)
+        result.append(dataset.thickness)
+        date.append(dataset.date.strftime("%Y-%m-%d %H:%M:%S"))
+        # 最后一个状态
+        if i == 0:
+            data = WarmInfo.objects.all().first()
+            warn_thickness = data.thickness_warm
+            state = 'green'
+            if result[0] < warn_thickness:
+                state = 'red'
+
+    data_res = {
+        "thickness_1": result[0],
+        "date_1": date[0],
+        "thickness_2": result[1],
+        "date_2": date[1],
+        "thickness_3": result[2],
+        "date_3": date[2],
+        "thickness_4": result[3],
+        "date_4": date[3],
+        "thickness_5": result[4],
+        "date_5": date[4],
+        "state": state,
+    }
+    # setThickData1()
+    return JsonResponse(data_res)
 
 def getThickData4(request):
     index4 = LastId.objects.get(id=1).lastid_4  # 201
-    print('厚度4 取到的id:', index4)
-    index4_new = index4 + 1
-    print('厚度4 增加后的id:', index4_new)
-    LastId.objects.filter(id=1).update(lastid_4=index4_new)
     dataset = ThickInfo4.objects.get(id=index4)
     result = dataset.thickness
     date = dataset.date.strftime("%Y-%m-%d %H:%M:%S")
@@ -356,7 +420,39 @@ def getThickData4(request):
     }
     return JsonResponse(data_res)
 
+def getThickData4First(request):
+    index4 = LastId.objects.get(id=1).lastid_4  # 201
+    result = []
+    date = []
+    state = ''
+    for i in range(1, 6):# 0 1 2 3 4
+        index4 = index4 - i
+        dataset = ThickInfo4.objects.get(id=index4)
+        result.append(dataset.thickness)
+        date.append(dataset.date.strftime("%Y-%m-%d %H:%M:%S"))
+        # 最后一个状态
+        if i == 0:
+            data = WarmInfo.objects.all().first()
+            warn_thickness = data.thickness_warm
+            state = 'green'
+            if result[0] < warn_thickness:
+                state = 'red'
 
+    data_res = {
+        "thickness_1": result[0],
+        "date_1": date[0],
+        "thickness_2": result[1],
+        "date_2": date[1],
+        "thickness_3": result[2],
+        "date_3": date[2],
+        "thickness_4": result[3],
+        "date_4": date[3],
+        "thickness_5": result[4],
+        "date_5": date[4],
+        "state": state,
+    }
+    # setThickData1()
+    return JsonResponse(data_res)
 
 def getLiquidData(request):
     dataset = LiquidInfo.objects.all()
@@ -380,33 +476,6 @@ def test(request):
     setThickData1()
     return JsonResponse({'state':'ok'})
 
-
-# 修改数据库的时间
-def changedate(request):
-    in_date = '2022-10-31 00:00:00'
-    dt = datetime.datetime.strptime(in_date, "%Y-%m-%d %H:%M:%S")
-    # LastId.objects.filter(id=1).update(lastid_3=index3 + 1)
-    for item1 in range(5328,5796):
-        new_date = (dt + datetime.timedelta(hours=(item1-5328+1))).strftime("%Y-%m-%d %H:%M:%S")
-        ThickInfo.objects.filter(id=item1).update(date=new_date)
-    for item2 in range(201,850):
-        new_date = (dt + datetime.timedelta(hours=(item2 - 201 + 1))).strftime("%Y-%m-%d %H:%M:%S")
-        ThickInfo2.objects.filter(id=item2).update(date=new_date)
-    for item3 in range(201,850):
-        new_date = (dt + datetime.timedelta(hours=(item3 - 201 + 1))).strftime("%Y-%m-%d %H:%M:%S")
-        ThickInfo3.objects.filter(id=item3).update(date=new_date)
-    for item4 in range(201,850):
-        new_date = (dt + datetime.timedelta(hours=(item4 - 201 + 1))).strftime("%Y-%m-%d %H:%M:%S")
-        ThickInfo4.objects.filter(id=item4).update(date=new_date)
-
-    return HttpResponse('ok')
-# if __name__ == '__main__':
-#     caiji_houdu=950
-#     #选择简化后的数据（每分钟的）和未简化的数据（每秒10次）
-#     sig1, sig15, sig2, sig16 = read_newtdmsfile("/Users/yaoyaohao/Desktop/EMF数据")
-#     a=calculate1(sig1,sig15,sig2,sig16,caiji_houdu)
-#     b=calculate2(sig1,sig15,caiji_houdu)
-#     print(b)
 
 
 

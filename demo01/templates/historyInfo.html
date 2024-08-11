@@ -10,57 +10,291 @@
             <li role="presentation" style="margin:10px;font-size: 24px;text-align: center" onmouseenter="ditch_four()" ><a href="#">4号铁钩</a></li>
         </ul>
     </div>
-
-    <div class="panel panel-default" style="width:80%;height:5vh;float:right" >
-        <form class="navbar-form navbar-left" role="search" style="float:right" method="post">
-            {% csrf_token %}
-          <div class="form-group">
-              <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
-            <input id="start_time" name="start" type="date" class="form-control" style="width:30vh;height:3vh" value ='2022-11-10'>
-          </div>
-          <button type="submit" class="btn btn-default" style="height:3vh;margin-left:5vh" onclick="update()">Submit</button>
-        </form>
-    </div>
     <!-- 提示信息处理 -->
     <div class="panel panel-default" style="width:80%;height:80vh;float:right" >
         <div class="panel-heading">
         <h3 class="panel-title" style="font-size: 24px">铁沟厚度历史查询</h3>
         </div>
-        <div id="echart_thick" style="width:100%;height:90%;margin-top:2">
+        <div id="echart_thick" style="width:50%;height:45%;margin-top:2;float:right">
+        </div>
+        <div id="echart_thick2" style="width:50%;height:45%;margin-top:2;float:right">
+        </div>
+        <div id="echart_thick3" style="width:50%;height:45%;margin-top:2;float:left">
+        </div>
+        <div id="echart_thick4" style="width:50%;height:45%;margin-top:2;float:left">
+
         </div>
     </div>
-    <div style="display:none">
-        <h1 id="mydate" >{{data.dates}}</h1>
-    </div>
 <script>
-    //document.getElementById('start_time').value = datas.start_time;
-    // 基于准备好的dom，初始化echarts实例
     var myChart_thick = echarts.init(document.getElementById('echart_thick'));
-    var dates = document.getElementById('mydate').innerHTML;
-    var date_res = dates.split('[')[1].split(']')[0].split(',');
-    // 指定图表的配置项和数据
-    var option = {
-        tooltip: {},
-        legend: {
-            data:['流量']
-        },
+    var date1 = [];
+    var data1 = [];
+    function addData(shift){
+        $.ajax({
+             url: "http://127.0.0.1:8000/info/historyInfo/",
+             type: "get",
+             success: function (res) {
+                data1 = res.datas_1
+                date1 = res.dates_1
+                setOptions1();
+             }
+             })
+        if(shift){
+            data1.shift();
+            date1.shift();
+        }
+    }
+    function setOptions1(){
+        option1 = {
         xAxis: {
-            type:'category',
-            data: date_res,
-            axisLabel:{
-    		        interval: 0,
-    		        rotate:45,
-    	         }
-        },
-        yAxis: {},
-        series: [{
-            name: '流量',
-            type: 'bar',
-            data: {{data.datas}}
-        }]
-    };
+                type: 'category',
+                boundaryGap: false,
+                data: date1
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+         },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data1,
+        }],
+        toolbox:{
+            emphasis: { //鼠标hover到图标的样式
+      iconStyle: {
+        color: 'rgba(198, 60, 17, 1)'
+      }
+    },
+    show: true,
+    feature: {
+      dataZoom: { //缩放
+        yAxisIndex: 'none'
+      },
+      restore: {}, //重置
+      saveAsImage: {} //保存图片
+    }
+        }
+    }
+        myChart_thick.setOption(option1);
+    }
+    addData(true)
 
-    // 使用刚指定的配置项和数据显示图表。
-    myChart_thick.setOption(option);
+    var myChart_thick2 = echarts.init(document.getElementById('echart_thick2'));
+    var date2 = [];
+    var data2 = [];
+    function addData2(shift){
+        $.ajax({
+             url: "http://127.0.0.1:8000/info/historyInfo/",
+             type: "get",
+             success: function (res) {
+                data2 = res.datas_2
+                date2 = res.dates_2
+                setOptions2();
+             }
+             })
+        if(shift){
+            data2.shift();
+            date2.shift();
+        }
+    }
+    function setOptions2(){
+        option2 = {
+        xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date2
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+         },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data2,
+        }],
+        toolbox:{
+            emphasis: { //鼠标hover到图标的样式
+      iconStyle: {
+        color: 'rgba(198, 60, 17, 1)'
+      }
+    },
+    show: true,
+    feature: {
+      dataZoom: { //缩放
+        yAxisIndex: 'none'
+      },
+      restore: {}, //重置
+      saveAsImage: {} //保存图片
+    }
+        }
+    }
+        myChart_thick2.setOption(option2);
+    }
+    addData2(true)
+
+    var myChart_thick3 = echarts.init(document.getElementById('echart_thick3'));
+    var date3 = [];
+    var data3 = [];
+    function addData3(shift){
+        $.ajax({
+             url: "http://127.0.0.1:8000/info/historyInfo/",
+             type: "get",
+             success: function (res) {
+                data3 = res.datas_3
+                date3 = res.dates_3
+                setOptions3();
+             }
+             })
+        if(shift){
+            data3.shift();
+            date3.shift();
+        }
+    }
+    function setOptions3(){
+        option3 = {
+        xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date3
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+         },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data3,
+        }],
+        toolbox:{
+            emphasis: { //鼠标hover到图标的样式
+      iconStyle: {
+        color: 'rgba(198, 60, 17, 1)'
+      }
+    },
+    show: true,
+    feature: {
+      dataZoom: { //缩放
+        yAxisIndex: 'none'
+      },
+      restore: {}, //重置
+      saveAsImage: {} //保存图片
+    }
+        }
+    }
+        myChart_thick3.setOption(option3);
+    }
+    addData3(true)
+
+
+    var myChart_thick4 = echarts.init(document.getElementById('echart_thick4'));
+    var date4 = [];
+    var data4 = [];
+    function addData4(shift){
+        $.ajax({
+             url: "http://127.0.0.1:8000/info/historyInfo/",
+             type: "get",
+             success: function (res) {
+                data4 = res.datas_4
+                date4 = res.dates_4
+                setOptions4();
+             }
+             })
+        if(shift){
+            data4.shift();
+            date4.shift();
+        }
+    }
+    function setOptions4(){
+        option4 = {
+        xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: date4
+                },
+        yAxis: {
+                min:0,
+                max:1000,
+                boundaryGap: [0, '50%'],
+                type: 'value'
+                },
+        grid: {
+            top: "5%"
+         },
+        series:[{
+            name:'成交',
+            type:'line',
+            smooth:true,
+            symbol: 'none',
+            stack: 'a',
+            areaStyle: {//填充
+                     normal: {}
+                        },
+            data: data4,
+        }],
+        toolbox:{
+            emphasis: { //鼠标hover到图标的样式
+      iconStyle: {
+        color: 'rgba(198, 60, 17, 1)'
+      }
+    },
+    show: true,
+    feature: {
+      dataZoom: { //缩放
+        yAxisIndex: 'none'
+      },
+      restore: {}, //重置
+      saveAsImage: {} //保存图片
+    }
+        }
+    }
+        myChart_thick4.setOption(option4);
+    }
+    addData4(true)
+</script>
+<script>
+    setInterval(function(){
+        $.ajax({
+               url: "http://127.0.0.1:8000/mytest",
+               type: "get",
+               success:function(res){
+                 console.log('请求发送玩了');
+               }
+        })},1000*60*60);
 </script>
 {% endblock %}

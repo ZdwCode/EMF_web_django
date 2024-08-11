@@ -404,7 +404,7 @@ def calculate1(_signal1,_signal2,_signal3,_signal4,init_data):
         xmin = np.min(e)
         xmax = np.max(e)
         y = np.interp(e, (xmin, xmax), (0, 1))
-        test = (c - 1 / 100 * 5 * y[0] * abs(a / b))
+        test = (c - 1 / 1000 * 5 * y[0] * abs(a / b))
         c = test
         # print(e[0] * abs(a / b))
         # ------------------#
@@ -461,8 +461,10 @@ def load_data(path):
     data0, data1, data2, data3 = read_newtdmsfile(path)
     # todo 姚灏的方法加载这 然后写进数据库
     caiji_houdu = 900
-    a=calculate1(data0, data1, data2, data3,caiji_houdu)
-    b=calculate2(data0, data1,caiji_houdu)
+    # a=calculate1(data0, data1, data2, data3, caiji_houdu)
+    # b=calculate2(data0, data1, caiji_houdu)
+    a = 0
+    b = 0
     # 本地测试地址
     # data0, data1, data2, data3 = read_newtdmsfile('../static/datas/')
     #data0, data1, data2, data3 = load_new_data()
@@ -496,24 +498,23 @@ def load_data(path):
     return X, a, b
 
 
-def read_newtdmsfile(path):  # "/Users/yaoyaohao/Desktop/EMF数据/*.tdms"
+def read_newtdmsfile(path):  # path = 'D:/测试数据
     # 获取目录中的 tdms 文件列表
-    # path=_path
-    # file_list = glob.glob(path+"/*.tdms")
-    # # 按照文件创建时间排序
-    # file_list.sort(key=lambda x: os.stat(x).st_ctime,reverse=True)
-    # file_path = file_list[0]
-    # file_info = os.stat(file_list[0])
-    # # 文件结束时间
-    # dt_end=datetime.datetime.fromtimestamp(file_info[ST_CTIME])
-    # # 文件名称
-    # file_name = os.path.basename(file_path)
-    # file_time, file_ext = os.path.splitext(file_name)
-    # #---------需要部分修改（开始采集时间和结束时间）
-    # G:\poststudy\2023-03\dist\dist\manage\django\contrib\admin\static\datas
-    file_path = path
-    # file_path = 'E:\pythonProject\laigang_web 2\demo01\static\datas\\数据_13日10时43分_7#.tdms'
-    #file_path = '.\demo01\static\datas\\数据_13日10时43分_7#.tdms'
+
+    file_list = glob.glob(path+'/*')
+    # 按照文件创建时间排序
+    file_list.sort(key=lambda x: os.stat(x).st_ctime, reverse=True)
+    # 取到最新的文件夹
+    file_name = os.path.basename(file_list[0])
+    # 拼接一下路劲
+    middle_path = path + '/' + file_name
+    inner_file_list = glob.glob(middle_path + '/*.tdms')
+    # 再取最新的tdms
+    inner_file_list.sort(key=lambda x: os.stat(x).st_ctime, reverse=True)
+    file_path = os.path.basename(inner_file_list[0])
+    finally_path = middle_path+'/'+ file_path
+    # 读取到了最新的文件
+    file_path = finally_path
     # read a tdms file
     filenameS = file_path
     print('读到的文件路径为:', path)
@@ -543,16 +544,21 @@ def read_newtdmsfile(path):  # "/Users/yaoyaohao/Desktop/EMF数据/*.tdms"
 
 if __name__ == "__main__":
     # 14 21 23 28
-    step = 500
+    #
+    # 学习率
     beta = 0.001
+    # 定义网络的结构
     layer = [4, 5, 6, 5, 4, 1]
     #layer = [4, 5, 3, 1]
+    # 从文件中读取数据 (预处理都在这,包括去除冗余数据，归一化，平滑)
     x, y, = load_data()
+    # 对数据做一个封装 比如说 某个点的四个信号 x1 x2 x3 x4 和对应的y 我们封装成[[x1,x2,x3,x4],] [[y],]
     data = [(np.array([[x_value[0]], [x_value[1]], [x_value[2]], [x_value[3]]]), np.array([y_value])) for
             x_value, y_value in zip(x, y)]
+    # 这里就是把模型构造出来，多少层 激活函数是什么 方向传递的时候怎么激活 误差怎么计算
     model = BP(layer, tanh, tanh_derivative, loss_derivative)
-    x = np.array(x)
     # y = np.array(y)
+    # 封装好数据后 就可以进行模型的正向和反向传递了 -- 就是更新参数
     epochs, losses = model.fit(train_data=data, epochs=8000, batch_size=64, learning_rate=beta, validation_data=(x, y))
     #model.load_weights()
     model.save_weights()
